@@ -91,7 +91,7 @@ class ConfigController extends AbstractController
             $this->em = $em;
 
             $this->saveCustomer($em, $csvDir);
-            $this->saveProduct($em, $csvDir);
+            //$this->saveProduct($em, $csvDir);
             $this->saveOrder($em, $csvDir);
 
             // 削除
@@ -122,14 +122,14 @@ class ConfigController extends AbstractController
                 $em->exec('SET session_replication_role = replica;'); // need super user
             }
 
-            $this->saveToC($em, $csvDir, 'mtb_job', null, true);
-            $this->saveToC($em, $csvDir, 'mtb_sex', null, true);
+            //$this->saveToC($em, $csvDir, 'mtb_job', null, true);
+            //$this->saveToC($em, $csvDir, 'mtb_sex', null, true);
             $this->saveToC($em, $csvDir, 'dtb_customer');
             //$index = $this->saveTo($em, $csvDir, 'dtb_customer', 'dtb_customer_address'); // 3と仕様が違う
             $this->saveToC($em, $csvDir, 'dtb_other_deliv', 'dtb_customer_address', false, 1/*$index*/);
 
-            $this->saveToC($em, $csvDir, 'mtb_authority', null, true);
-            $this->saveToC($em, $csvDir, 'dtb_member', null, true);
+            //$this->saveToC($em, $csvDir, 'mtb_authority', null, true);
+            //$this->saveToC($em, $csvDxir, 'dtb_member', null, true);
 
             if ($platform == 'mysql') {
                 $em->exec('SET FOREIGN_KEY_CHECKS = 1;');
@@ -860,10 +860,10 @@ class ConfigController extends AbstractController
             $this->saveToO($em, $csvDir, 'dtb_order');
             $this->saveToO($em, $csvDir, 'dtb_shipping');
 
-            $this->saveToO($em, $csvDir, 'dtb_payment');
-            $this->saveToO($em, $csvDir, 'dtb_deliv', 'dtb_delivery');
-            $this->saveToO($em, $csvDir, 'dtb_delivfee', 'dtb_delivery_fee');
-            $this->saveToO($em, $csvDir, 'dtb_delivtime', 'dtb_delivery_time');
+            //$this->saveToO($em, $csvDir, 'dtb_payment');
+            //$this->saveToO($em, $csvDir, 'dtb_deliv', 'dtb_delivery');
+            //$this->saveToO($em, $csvDir, 'dtb_delivfee', 'dtb_delivery_fee');
+            //$this->saveToO($em, $csvDir, 'dtb_delivtime', 'dtb_delivery_time');
 
             $this->saveToO($em, $csvDir, 'dtb_mail_history', 'dtb_mail_history');
 
@@ -872,14 +872,14 @@ class ConfigController extends AbstractController
             //$this->saveToO($em, $csvDir, 'dtb_shipment_item', 'dtb_order_item');
 
             // todo 商品別税率設定
-            $this->saveToO($em, $csvDir, 'dtb_tax_rule');
+            //$this->saveToO($em, $csvDir, 'dtb_tax_rule');
 
             if (!empty($this->order_item)) {
                 $this->saveOrderItem($em);
             }
 
             // 支払いは基本移行しない
-            $em->exec('DELETE FROM dtb_payment_option');
+            //$em->exec('DELETE FROM dtb_payment_option');
 
             if ($platform == 'mysql') {
                 $em->exec('SET FOREIGN_KEY_CHECKS = 1;');
@@ -1034,7 +1034,7 @@ class ConfigController extends AbstractController
                     } elseif ($column == 'payment_date') {
                         $value[$column] = (!empty($data[$column]) && $data[$column] != '0000-00-00 00:00:00') ? self::convertTz($data[$column]) : null;
                     } elseif ($column == 'creator_id') {
-                        $value[$column] = !empty($data[$column]) ? $data[$column] : 1;
+                        $value[$column] = !empty($data[$column]) ? $data[$column] : null;
                     } elseif ($column == 'charge' || $column == 'use_point' || $column == 'add_point' || $column == 'discount' || $column == 'total' || $column == 'subtotal' || $column == 'tax' || $column == 'payment_total') {
                         $value[$column] = !empty($data[$column]) ? $data[$column] : 0;
 
